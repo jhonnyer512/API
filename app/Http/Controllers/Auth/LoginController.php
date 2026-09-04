@@ -63,47 +63,48 @@ class LoginController extends Controller
 
     // Iniciar sesión
     public function store(Request $request): RedirectResponse
-    {
-        $credentials = $request->validate([
-            'email' => [
-                'required',
-                'email',
-                'max:255'
-            ],
+        {
+            $credentials = $request->validate([
+                'email' => [
+                    'required',
+                    'email',
+                    'max:255'
+                ],
 
-            'password' => [
-                'required',
-                'string'
-            ],
-        ]);
+                'password' => [
+                    'required',
+                    'string'
+                ],
+            ]);
 
-        if (!Auth::attempt(
-            $credentials,
-            $request->boolean('remember')
-        )) {
-            return back()
-                ->withErrors([
-                    'email' => 'Las credenciales proporcionadas no son válidas.',
-                ])
-                ->onlyInput('email');
+            if (!Auth::attempt(
+                $credentials,
+                $request->boolean('remember')
+            )) {
+
+                return back()
+                    ->withErrors([
+                        'email' => 'Las credenciales proporcionadas no son válidas.',
+                    ])
+                    ->onlyInput('email');
+            }
+
+            $request->session()->regenerate();
+
+            return redirect()->intended(
+                route('dashboard')
+            );
         }
-
-        $request->session()->regenerate();
-
-        return redirect()->intended(
-            route('dashboard')
-        );
-    }
 
     // Cerrar sesión
     public function destroy(Request $request): RedirectResponse
-    {
-        Auth::logout();
+        {
+            Auth::logout();
 
-        $request->session()->invalidate();
+            $request->session()->invalidate();
 
-        $request->session()->regenerateToken();
+            $request->session()->regenerateToken();
 
-        return redirect()->route('login');
-    }
+            return redirect()->route('login');
+        }
 }

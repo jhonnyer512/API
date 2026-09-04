@@ -81,7 +81,9 @@
                 </p>
 
 
-                <form id="loginForm">
+                <form method="POST" action="{{ route('login.store') }}">
+
+                     @csrf
 
                     <!-- EMAIL -->
                     <div class="input-group">
@@ -90,9 +92,16 @@
                         <input
                             type="email"
                             id="email"
+                            name="email"
+                            value="{{ old('email') }}"
                             placeholder="ejemplo@correo.com"
                             required
                         >
+                        @error('email')
+                            <p class="error-message">
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
 
 
@@ -105,6 +114,7 @@
                             <input
                                 type="password"
                                 id="password"
+                                name="password"
                                 placeholder="••••••••"
                                 required
                             >
@@ -124,10 +134,11 @@
                     <!-- OPCIONES -->
                     <div class="login-options">
 
-                        <label class="remember">
-                            <input type="checkbox" id="remember">
-                            <span>Recordarme</span>
-                        </label>
+                        <input
+                            type="checkbox"
+                            id="remember"
+                            name="remember"
+                        >
 
                         <a href="#" onclick="forgotPassword()">
                             ¿Olvidaste tu contraseña?

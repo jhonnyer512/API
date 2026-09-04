@@ -132,7 +132,13 @@
 
 
                 <!-- FORMULARIO -->
-                <form id="registerForm">
+                <form
+                    id="registerForm"
+                    method="POST"
+                    action="{{ route('register.store') }}"
+                >
+
+                    @csrf
 
 
                     <!-- NOMBRE -->
@@ -145,9 +151,17 @@
                         <input
                             type="text"
                             id="name"
+                            name="name"
+                            value="{{ old('name') }}"
                             placeholder="Tu nombre completo"
                             required
                         >
+
+                        @error('name')
+                            <p class="error-message">
+                                {{ $message }}
+                            </p>
+                        @enderror
 
                     </div>
 
@@ -162,9 +176,17 @@
                         <input
                             type="email"
                             id="email"
+                            name="email"
+                            value="{{ old('email') }}"
                             placeholder="ejemplo@correo.com"
                             required
                         >
+
+                        @error('email')
+                            <p class="error-message">
+                                {{ $message }}
+                            </p>
+                        @enderror
 
                     </div>
 
@@ -181,6 +203,7 @@
                             <input
                                 type="password"
                                 id="password"
+                                name="password"
                                 placeholder="••••••••"
                                 required
                             >
@@ -193,6 +216,11 @@
                                 👁
                             </button>
 
+                            @error('password')
+                                <p class="error-message">
+                                    {{ $message }}
+                                </p>
+                            @enderror
                         </div>
 
                     </div>
@@ -210,6 +238,7 @@
                             <input
                                 type="password"
                                 id="confirmPassword"
+                                name="password_confirmation"
                                 placeholder="••••••••"
                                 required
                             >
